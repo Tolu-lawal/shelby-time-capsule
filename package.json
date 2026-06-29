@@ -13,6 +13,7 @@
     "@wallet-standard/core": "^1.1.1"
   },
   "devDependencies": {
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-node-polyfills": "^0.28.0"
   }
 }
