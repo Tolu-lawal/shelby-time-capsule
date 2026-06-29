@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shelby Time Capsule — Seal a Message</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <svg class="seal-svg" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="28" stroke="#c9a84c" stroke-width="1" opacity="0.4"/>
+      <circle cx="32" cy="32" r="22" stroke="#c9a84c" stroke-width="1" opacity="0.6"/>
+      <path d="M32 14L35.5 24.5L46.5 24.5L37.5 31L41 41.5L32 35L23 41.5L26.5 31L17.5 24.5L28.5 24.5Z" fill="#c9a84c" opacity="0.8"/>
+    </svg>
+    <div class="eyebrow">Shelby Protocol · Time Capsule v3</div>
+    <h1 class="title">Seal a <em>Message</em><br>in Time</h1>
+    <p class="subtitle">Encrypted. Stored on ShelbyNet. Unlocked on-chain — by the Aptos clock, not by trust.</p>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-diamond">◆</div><div class="divider-line"></div></div>
+
+  <div class="wallet-section">
+    <button class="wallet-btn" id="walletBtn">
+      <div class="wallet-left">
+        <div class="wallet-dot" id="walletDot"></div>
+        <div>
+          <div class="wallet-label" id="walletLabel">Connect Petra Wallet to Continue</div>
+          <div class="wallet-address" id="walletAddress"></div>
+        </div>
+      </div>
+      <span style="font-size:0.6rem;color:var(--muted);letter-spacing:2px" id="walletBtnRight">CONNECT →</span>
+    </button>
+    <button class="disconnect-btn" id="disconnectBtn" style="display:none">Disconnect Wallet</button>
+  </div>
+
+  <div class="form">
+    <div class="field">
+      <label class="label">Your Message <span>— encrypted in your browser before upload</span></label>
+      <textarea id="message" placeholder="Write what you want the future to know..." maxlength="2000" disabled></textarea>
+      <div class="char-count"><span id="charCount">0</span> / 2000</div>
+    </div>
+
+    <div class="date-row">
+      <div class="field">
+        <label class="label">Unlock Date</label>
+        <input type="date" id="unlockDate" disabled/>
+      </div>
+      <div class="field">
+        <label class="label">Recipient <span>— optional wallet</span></label>
+        <input type="text" id="recipient" placeholder="0x... or blank for anyone" disabled/>
+      </div>
+    </div>
+
+    <div class="wallet-section" id="recipientAuthSection" style="display:none;margin-bottom:0">
+      <button class="wallet-btn" id="recipientWalletBtn">
+        <div class="wallet-left">
+          <div class="wallet-dot" id="recipientWalletDot"></div>
+          <div>
+            <div class="wallet-label" id="recipientWalletLabel">Recipient: Connect Wallet to Authorize</div>
+            <div class="wallet-address" id="recipientWalletAddress"></div>
+          </div>
+        </div>
+        <span style="font-size:0.6rem;color:var(--muted);letter-spacing:2px" id="recipientWalletBtnRight">AUTHORIZE →</span>
+      </button>
+    </div>
+
+    <div class="info-box">
+      <p><strong>How it works:</strong> A random key is generated and stored in a Move smart contract on Aptos. The contract releases it only once the chain's own clock passes your unlock date — that check happens <strong>on-chain</strong>, not in this page's JavaScript. Your message is AES-256 encrypted with that key and uploaded as a real blob to <strong>ShelbyNet</strong>. If you set a recipient, their wallet's signature is also mixed into the key, so only they can ever decrypt it.</p>
+    </div>
+
+    <div class="progress" id="progress">
+      <div class="progress-step" id="step1"><div class="step-icon">○</div><div>Generating commitments for ShelbyNet...</div></div>
+      <div class="progress-step" id="step2"><div class="step-icon">○</div><div>Sign in Petra: register blob on Aptos...</div></div>
+      <div class="progress-step" id="step3"><div class="step-icon">○</div><div>Uploading encrypted bytes to ShelbyNet...</div></div>
+      <div class="progress-step" id="step4"><div class="step-icon">○</div><div>Sign in Petra: seal capsule on-chain...</div></div>
+      <div class="progress-step" id="step5"><div class="step-icon">○</div><div>Confirming transaction...</div></div>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="result" id="result">
+      <div class="result-title">✦ Capsule Sealed</div>
+      <div style="font-size:0.68rem;color:var(--muted);line-height:1.7">Stored on ShelbyNet. Time-locked on Aptos. Share this link.</div>
+      <div class="result-url" id="resultUrl"></div>
+      <button class="copy-btn" id="copyBtn">Copy Link</button>
+      <div class="result-meta" id="resultMeta"></div>
+    </div>
+
+    <button class="seal-btn" id="sealBtn" disabled><span>◆ &nbsp; Seal the Capsule</span></button>
+  </div>
+
+  <div class="footer">
+    Built on <a href="https://shelby.xyz" target="_blank">Shelby Protocol</a> · ShelbyNet · Aptos
+    &nbsp;·&nbsp; <a href="./open.html">Open a Capsule →</a>
+  </div>
+</div>
+
+<script type="module" src="./seal.js"></script>
+</body>
+</html>

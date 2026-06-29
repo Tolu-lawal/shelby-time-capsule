@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shelby Time Capsule — Open</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/open-BRXqjpOd.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/contract-Bskh18Fa.js">
+  <link rel="stylesheet" crossorigin href="/assets/contract-BrIp1SsD.css">
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<div class="container">
+
+  <div class="loading-state" id="loadingState"><p>◆ &nbsp; reading capsule from the aptos chain &nbsp; ◆</p></div>
+
+  <div class="wallet-gate" id="walletGate">
+    <div>
+      <div style="font-size:0.6rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:12px">Shelby Time Capsule</div>
+      <h2 class="gate-title">Sign to <em>Open</em></h2>
+    </div>
+    <p class="gate-sub" id="gateSub">Connect your Petra wallet to verify your identity<br>and access this time capsule.</p>
+    <button class="wallet-btn" id="gateBtn" style="max-width:320px">Connect Petra Wallet</button>
+    <div class="wallet-status" id="gateStatus"></div>
+  </div>
+
+  <div class="locked-state" id="lockedState">
+    <svg class="wax-seal" viewBox="0 0 120 120" fill="none">
+      <circle cx="60" cy="60" r="55" fill="#5a0a0a" stroke="#8b1a1a" stroke-width="1.5"/>
+      <circle cx="60" cy="60" r="48" fill="#6b0d0d" stroke="#a02020" stroke-width="1"/>
+      <rect x="44" y="56" width="32" height="24" rx="3" fill="#c9a84c" opacity="0.9"/>
+      <path d="M50 56 V48 C50 41 70 41 70 48 V56" stroke="#c9a84c" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="60" cy="67" r="4" fill="#5a0a0a"/>
+      <rect x="58.5" y="67" width="3" height="6" fill="#5a0a0a"/>
+      <circle cx="60" cy="60" r="52" fill="none" stroke="#8b1a1a" stroke-width="0.5" stroke-dasharray="4 4"/>
+    </svg>
+    <div class="locked-eyebrow">Time Capsule · Sealed On-Chain</div>
+    <h1 class="locked-title">Not Yet <em>Time</em></h1>
+    <p class="locked-sub">The Aptos blockchain is keeping this sealed</p>
+
+    <div class="countdown">
+      <div class="countdown-unit"><span class="countdown-number" id="cdDays">--</span><span class="countdown-label">Days</span></div>
+      <div class="countdown-unit"><span class="countdown-number" id="cdHours">--</span><span class="countdown-label">Hours</span></div>
+      <div class="countdown-unit"><span class="countdown-number" id="cdMins">--</span><span class="countdown-label">Minutes</span></div>
+      <div class="countdown-unit"><span class="countdown-number" id="cdSecs">--</span><span class="countdown-label">Seconds</span></div>
+    </div>
+
+    <div class="capsule-info">
+      <div class="info-row"><span class="info-key">Verified Viewer</span><span class="info-val green" id="infoViewer">—</span></div>
+      <div class="info-row"><span class="info-key">Author</span><span class="info-val" id="infoAuthor">—</span></div>
+      <div class="info-row"><span class="info-key">Opens On</span><span class="info-val gold" id="infoUnlock">—</span></div>
+      <div class="info-row"><span class="info-key">Capsule ID</span><span class="info-val" id="infoCapsuleId">—</span></div>
+      <div class="info-row"><span class="info-key">Network</span><span class="info-val gold">ShelbyNet · Aptos</span></div>
+    </div>
+
+    <p class="locked-note">Your wallet has been verified. Return on <strong id="unlockDisplay">—</strong> and the message reveals itself.<br>The release of the key is enforced by a Move contract on Aptos — even editing this page's code can't open it early.</p>
+    <p class="locked-note" id="recipientBoundNote" style="display:none;color:#e88;margin-top:8px">⚠ This capsule's encryption key is also bound to a specific wallet's signature. Even after unlock, only the intended recipient can decrypt it.</p>
+  </div>
+
+  <div class="wrong-wallet" id="wrongWallet">
+    <h2>Wrong Wallet</h2>
+    <p>This capsule was sealed for a specific recipient.<br>Only the intended wallet address can open it.</p>
+    <a href="./index.html" class="back-link">← Seal Your Own Capsule</a>
+  </div>
+
+  <div class="revealed-state" id="revealedState">
+    <div style="text-align:center">
+      <div class="revealed-eyebrow">✦ &nbsp; The Seal is Broken &nbsp; ✦</div>
+      <h1 class="revealed-title">A Message from the Past</h1>
+    </div>
+    <div class="message-scroll">
+      <div class="message-text" id="messageText"></div>
+      <div class="message-from" id="messageFrom"></div>
+    </div>
+    <div class="revealed-meta">
+      <div class="meta-cell"><div class="meta-key">Author</div><div class="meta-val gold" id="metaAuthor">—</div></div>
+      <div class="meta-cell"><div class="meta-key">Network</div><div class="meta-val gold">ShelbyNet · Aptos</div></div>
+      <div class="meta-cell"><div class="meta-key">Sealed</div><div class="meta-val" id="metaSealed">—</div></div>
+      <div class="meta-cell"><div class="meta-key">Blob</div><div class="meta-val" id="metaBlob">—</div></div>
+    </div>
+  </div>
+
+  <div class="error-state" id="errorState">
+    <h2 id="errorTitle">Capsule Not Found</h2>
+    <p id="errorBody">This capsule may not exist on-chain,<br>or the link may be invalid.</p>
+    <a href="./index.html" class="back-link">← Seal a New Capsule</a>
+  </div>
+
+  <div class="footer" style="margin-top:48px">
+    Built on <a href="https://shelby.xyz" target="_blank">Shelby Protocol</a> · ShelbyNet · Aptos
+    &nbsp;·&nbsp; <a href="./index.html">← Seal a Capsule</a>
+  </div>
+</div>
+
+</body>
+</html>
