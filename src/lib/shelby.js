@@ -110,9 +110,6 @@ await new Promise(r => setTimeout(r, 5000));
   return { txHash, blobName, merkleRoot: commitments.blob_merkle_root };
 }
 
-/**
- * Download a blob's bytes from ShelbyNet.
- */
 export async function downloadCapsuleFromShelby({ ownerAddress, blobName }) {
   const rpc = new ShelbyRPCClient({
     network: 'shelbynet',
@@ -125,23 +122,25 @@ export async function downloadCapsuleFromShelby({ ownerAddress, blobName }) {
     blobName,
   });
 
-  try {
+  if (blob instanceof Uint8Array) return blob;
+  if (typeof blob === 'string') return new TextEncoder().encode(blob);
+  if (blob?.data instanceof Uint8Array) return blob.data;
+  if (typeof blob?.data === 'string') return new TextEncoder().encode(blob.data);
+
+  if (blob?.readable) {
     const chunks = [];
     const reader = blob.readable.getReader();
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      chunks.push(value);
+      if (value) chunks.push(value);
     }
     const total = chunks.reduce((n, c) => n + c.length, 0);
     const out = new Uint8Array(total);
     let offset = 0;
     for (const c of chunks) { out.set(c, offset); offset += c.length; }
     return out;
-  } catch {
-    if (typeof blob === 'string') return new TextEncoder().encode(blob);
-    if (blob instanceof Uint8Array) return blob;
-    return new TextEncoder().encode(JSON.stringify(blob));
   }
-}
 
+  throw new Error('Unknown blob format: ' + JSON.stringify(Object.keys(blob || {})));
+}
