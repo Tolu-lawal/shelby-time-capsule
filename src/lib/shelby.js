@@ -90,6 +90,9 @@ export async function uploadCapsuleToShelby({ wallet, ownerAddress, blobName, da
 
   const txHash = await signAndSubmitTransaction(wallet, payload.function, payload.functionArguments);
 
+  // Wait for the transaction to be indexed by ShelbyNet before uploading bytes
+await new Promise(r => setTimeout(r, 5000));
+
   onProgress?.('uploading-bytes');
   const rpc = new ShelbyRPCClient({
     network: 'shelbynet',
