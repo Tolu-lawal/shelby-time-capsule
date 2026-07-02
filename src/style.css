@@ -171,3 +171,4 @@ textarea::placeholder, input::placeholder { color:var(--muted); font-style:itali
 .error-state h2 { font-family:var(--font-display); font-size:2rem; font-weight:300; color:var(--muted); font-style:italic; }
 .error-state p { font-size:0.68rem; color:var(--muted); letter-spacing:1px; line-height:1.8; }
 .back-link { color:var(--gold); text-decoration:none; font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid rgba(201,168,76,0.3); padding-bottom:2px; }
+.link-input-section { display:none; width:100%; }

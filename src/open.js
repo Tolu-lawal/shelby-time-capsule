@@ -215,4 +215,32 @@ async function init() {
   $('walletGate').classList.add('active');
 }
 
+// ── Link input handler ──
+const linkInput = $('linkInputSection');
+const capsuleInput = $('capsuleLinkInput');
+const openBtn = $('openCapsuleBtn');
+
+if (linkInput && !capsuleId) {
+  // No capsule ID in URL — show the link input instead
+  $('loadingState').style.display = 'none';
+  linkInput.style.display = 'block';
+}
+
+openBtn?.addEventListener('click', () => {
+  const val = capsuleInput.value.trim();
+  if (!val) return;
+  try {
+    const url = new URL(val);
+    const id = url.searchParams.get('id');
+    if (!id) { alert('No capsule ID found in that link.'); return; }
+    window.location.href = `/open.html?id=${id}`;
+  } catch {
+    alert('Invalid link. Paste the full capsule URL.');
+  }
+});
+
+capsuleInput?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') openBtn.click();
+});
+
 init();
