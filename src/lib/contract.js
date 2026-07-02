@@ -109,6 +109,13 @@ export async function isCapsuleUnlocked(capsuleId) {
   return !!unlocked;
 }
 
+function hexToBytes(hex) {
+  const clean = String(hex).replace(/^0x/, '');
+  const out = new Uint8Array(clean.length / 2);
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
+  return out;
+}
+
 /**
  * THE CORE ENFORCEMENT CALL.
  *
@@ -124,8 +131,9 @@ export async function isCapsuleUnlocked(capsuleId) {
 export async function getTimeKey(capsuleId) {
   assertDeployed();
   try {
-    const [timeKeyBytes] = await callView(fn('get_time_key'), [], [CONTRACT_ADDRESS, capsuleId.toString()]);
-    return new Uint8Array(timeKeyBytes);
+    const [timeKeyRaw] = await callView(fn('get_time_key'), [], [CONTRACT_ADDRESS, capsuleId.toString()]);
+    // Aptos view calls return vector<u8> as a hex string, not a number array
+    return typeof timeKeyRaw === 'string' ? hexToBytes(timeKeyRaw) : new Uint8Array(timeKeyRaw);
   } catch (err) {
     const msg = String(err.message || err);
     if (msg.includes('E_NOT_YET_TIME') || msg.includes('"1"') || /\b1\b.*abort/.test(msg)) {
