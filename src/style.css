@@ -172,3 +172,23 @@ textarea::placeholder, input::placeholder { color:var(--muted); font-style:itali
 .error-state p { font-size:0.68rem; color:var(--muted); letter-spacing:1px; line-height:1.8; }
 .back-link { color:var(--gold); text-decoration:none; font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid rgba(201,168,76,0.3); padding-bottom:2px; }
 .link-input-section { display:none; width:100%; }
+.quick-pick-btn {
+  background: transparent;
+  border: 1px solid var(--gold, #c9a84c);
+  color: var(--gold, #c9a84c);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.quick-pick-btn:hover:not(:disabled) {
+  background: var(--gold, #c9a84c);
+  color: #111;
+}
+.quick-pick-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

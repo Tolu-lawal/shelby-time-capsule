@@ -52,7 +52,14 @@
     <div class="date-row">
       <div class="field">
         <label class="label">Unlock Date</label>
-        <input type="date" id="unlockDate" disabled/>
+        <input type="datetime-local" id="unlockDate" disabled/>
+        <div class="quick-pick-row" style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <button type="button" class="quick-pick-btn" data-mins="2" disabled>2 min</button>
+          <button type="button" class="quick-pick-btn" data-mins="10" disabled>10 min</button>
+          <button type="button" class="quick-pick-btn" data-mins="60" disabled>1 hr</button>
+          <button type="button" class="quick-pick-btn" data-mins="1440" disabled>1 day</button>
+          <button type="button" class="quick-pick-btn" data-mins="10080" disabled>7 days</button>
+        </div>
       </div>
       <div class="field">
         <label class="label">Recipient <span>— optional wallet</span></label>

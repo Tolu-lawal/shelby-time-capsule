@@ -64,6 +64,7 @@ $('walletBtn').addEventListener('click', async () => {
 
     $('message').disabled = false;
     $('unlockDate').disabled = false;
+    document.querySelectorAll('.quick-pick-btn').forEach(b => b.disabled = false);
     $('recipient').disabled = false;
     $('sealBtn').disabled = false;
     clearError();
@@ -87,6 +88,7 @@ $('disconnectBtn').addEventListener('click', async () => {
 
   $('message').disabled = true;
   $('unlockDate').disabled = true;
+    document.querySelectorAll('.quick-pick-btn').forEach(b => b.disabled = true);
   $('recipient').disabled = true;
   $('sealBtn').disabled = true;
   $('recipient').value = '';
@@ -152,9 +154,20 @@ $('message').addEventListener('input', () => {
   $('charCount').textContent = $('message').value.length;
 });
 
-const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
-$('unlockDate').min = tomorrow.toISOString().split('T')[0];
-$('unlockDate').value = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
+function toLocalDatetimeInputValue(date) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+const minUnlock = new Date(Date.now() + 2 * 60000); // at least 2 minutes out
+$('unlockDate').min = toLocalDatetimeInputValue(minUnlock);
+$('unlockDate').value = toLocalDatetimeInputValue(new Date(Date.now() + 7 * 86400000));
+
+document.querySelectorAll('.quick-pick-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const mins = parseInt(btn.dataset.mins, 10);
+    $('unlockDate').value = toLocalDatetimeInputValue(new Date(Date.now() + mins * 60000));
+  });
+});
 
 // ── Seal ──
 $('sealBtn').addEventListener('click', async () => {
@@ -172,7 +185,7 @@ $('sealBtn').addEventListener('click', async () => {
   if (!authorWallet) { showError('Please connect your Petra wallet first.'); return; }
   if (!message) { showError('Please write a message to seal.'); return; }
   if (!unlockDateStr) { showError('Please set an unlock date.'); return; }
-  const unlockTimeSeconds = Math.floor(new Date(unlockDateStr + 'T00:00:00Z').getTime() / 1000);
+  const unlockTimeSeconds = Math.floor(new Date(unlockDateStr).getTime() / 1000);
   if (unlockTimeSeconds <= Math.floor(Date.now() / 1000)) { showError('Unlock date must be in the future.'); return; }
   if (recipientTyped && !recipientSecret) { showError('Have the recipient connect & authorize their wallet first.'); return; }
 
