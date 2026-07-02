@@ -98,8 +98,12 @@ async function attemptReveal() {
 
     // 2. Download the real encrypted blob from ShelbyNet
     const rawBytes = await downloadCapsuleFromShelby({ ownerAddress: info.author, blobName: info.blobName });
-console.log('blob type:', typeof rawBytes, 'length:', rawBytes?.length, 'sample:', rawBytes?.slice?.(0, 50));
-    const ciphertextB64 = new TextDecoder().decode(rawBytes);
+console.log('blob type:', typeof rawBytes, 'constructor:', rawBytes?.constructor?.name, 'value:', rawBytes);
+const ciphertextB64 = rawBytes instanceof Uint8Array 
+  ? new TextDecoder().decode(rawBytes)
+  : typeof rawBytes === 'string' 
+    ? rawBytes 
+    : new TextDecoder().decode(new Uint8Array(Object.values(rawBytes)));
 
     // 3. Recompute the recipient secret if this capsule is recipient-bound
     let recipientSecret = null;
