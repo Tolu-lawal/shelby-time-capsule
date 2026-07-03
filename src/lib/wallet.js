@@ -96,4 +96,15 @@ export async function switchToShelbyNet(wallet) {
   }
 }
 
+export async function getCurrentNetwork(wallet) {
+  const feature = wallet.features?.['aptos:network'];
+  if (!feature) return null;
+  try {
+    return await feature.network(); // typically { name, chainId, url }
+  } catch (e) {
+    console.warn('Could not read current network:', e);
+    return null;
+  }
+}
+
 export { findAptosWallet, };

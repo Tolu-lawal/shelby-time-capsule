@@ -1,4 +1,4 @@
-import { waitForWallet, connectWallet, disconnectWallet, switchToShelbyNet } from './lib/wallet.js';
+import { waitForWallet, connectWallet, disconnectWallet, switchToShelbyNet, getCurrentNetwork } from './lib/wallet.js';
 import { generateTimeKey, encryptMessage, deriveRecipientSecret, bytesToHex } from './lib/crypto.js';
 import { uploadCapsuleToShelby } from './lib/shelby.js';
 import { sealCapsuleOnChain, getCapsuleIdFromTx, CONTRACT_ADDRESS } from './lib/contract.js';
@@ -52,11 +52,17 @@ $('walletBtn').addEventListener('click', async () => {
 
   try {
     authorAddress = await connectWallet(wallet);
-    const onShelbyNet = await switchToShelbyNet(wallet);
+    await switchToShelbyNet(wallet); // best-effort; Petra's changeNetwork is unreliable, don't trust its result
+    const net = await getCurrentNetwork(wallet);
+    const onShelbyNet = net && (
+      String(net.chainId) === '114' ||
+      String(net.chainId) === '0x72' ||
+      String(net.name || '').toLowerCase() === 'shelbynet'
+    );
     authorWallet = wallet;
 
     if (!onShelbyNet) {
-      showError('Could not auto-switch to ShelbyNet. Please open Petra and manually switch the network to "Shelbynet" before sealing, then reconnect.');
+      showError('Petra is not on ShelbyNet (currently: ' + (net?.name || net?.chainId || 'unknown') + '). Please open Petra and manually switch the network to "Shelbynet" before sealing, then reconnect.');
     }
 
     $('walletDot').classList.add('connected');
