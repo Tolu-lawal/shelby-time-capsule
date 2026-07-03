@@ -71,7 +71,7 @@ $('walletBtn').addEventListener('click', async () => {
     document.querySelectorAll('.quick-pick-btn').forEach(b => b.disabled = false);
     $('recipient').disabled = false;
     $('sealBtn').disabled = false;
-    clearError();
+    if (onShelbyNet) clearError();
   } catch (err) {
     right.textContent = 'CONNECT →';
     showError('Connection failed: ' + (err.message || String(err)));
