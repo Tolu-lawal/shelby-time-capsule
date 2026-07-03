@@ -86,10 +86,14 @@ export async function signMessage(wallet, message, nonce = '0') {
 
 export async function switchToShelbyNet(wallet) {
   const feature = wallet.features?.['aptos:changeNetwork'];
-  if (!feature) return;
+  if (!feature) return false;
   try {
-    await feature.changeNetwork({ name: 'shelbynet', chainId: '0x71' });
-  } catch (e) { /* user may cancel — not fatal */ }
+    await feature.changeNetwork({ name: 'shelbynet', chainId: '0x72' });
+    return true;
+  } catch (e) {
+    console.warn('Could not auto-switch to ShelbyNet:', e);
+    return false;
+  }
 }
 
 export { findAptosWallet, };

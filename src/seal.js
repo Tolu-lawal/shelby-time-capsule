@@ -52,8 +52,12 @@ $('walletBtn').addEventListener('click', async () => {
 
   try {
     authorAddress = await connectWallet(wallet);
-    await switchToShelbyNet(wallet);
+    const onShelbyNet = await switchToShelbyNet(wallet);
     authorWallet = wallet;
+
+    if (!onShelbyNet) {
+      showError('Could not auto-switch to ShelbyNet. Please open Petra and manually switch the network to "Shelbynet" before sealing, then reconnect.');
+    }
 
     $('walletDot').classList.add('connected');
     $('walletLabel').textContent = 'Petra Wallet Connected';
