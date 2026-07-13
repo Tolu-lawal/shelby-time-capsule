@@ -1,4 +1,4 @@
-# Shelby Time Capsule v3 — On-Chain Enforced
+# Missive — On-Chain Enforced
 
 A time capsule app where the time-lock is enforced by a Move smart contract
 on Aptos, and the encrypted message is genuinely stored on ShelbyNet — not
